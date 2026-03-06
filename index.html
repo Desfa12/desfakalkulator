@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="synthwave">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculator Desfa</title>
+
+<link href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+body{
+background: linear-gradient(135deg,#1a0033,#000000,#1a0033);
+}
+</style>
+</head>
+
+<body class="flex items-center justify-center min-h-screen">
+
+<div class="card bg-base-200 shadow-2xl p-6 w-80 backdrop-blur-xl">
+
+<h1 class="text-center text-xl font-bold mb-3">Calculator Desfa</h1>
+
+<div id="display" class="bg-black text-right text-3xl p-4 rounded-xl mb-4 overflow-hidden">
+0
+</div>
+
+<div class="grid grid-cols-4 gap-3">
+
+<button class="btn btn-warning" onclick="clearDisplay()">AC</button>
+<button class="btn btn-warning" onclick="deleteLast()">⌫</button>
+<button class="btn btn-warning" onclick="clearDisplay()">CE</button>
+<button class="btn btn-primary" onclick="appendOperator('/')">÷</button>
+
+<button class="btn btn-neutral" onclick="appendNumber(7)">7</button>
+<button class="btn btn-neutral" onclick="appendNumber(8)">8</button>
+<button class="btn btn-neutral" onclick="appendNumber(9)">9</button>
+<button class="btn btn-primary" onclick="appendOperator('*')">×</button>
+
+<button class="btn btn-neutral" onclick="appendNumber(4)">4</button>
+<button class="btn btn-neutral" onclick="appendNumber(5)">5</button>
+<button class="btn btn-neutral" onclick="appendNumber(6)">6</button>
+<button class="btn btn-primary" onclick="appendOperator('-')">−</button>
+
+<button class="btn btn-neutral" onclick="appendNumber(1)">1</button>
+<button class="btn btn-neutral" onclick="appendNumber(2)">2</button>
+<button class="btn btn-neutral" onclick="appendNumber(3)">3</button>
+<button class="btn btn-primary" onclick="appendOperator('+')">+</button>
+
+<button class="btn btn-neutral col-span-2" onclick="appendNumber(0)">0</button>
+<button class="btn btn-neutral" onclick="appendNumber('.')">.</button>
+<button class="btn btn-success" onclick="calculateResult()">=</button>
+
+</div>
+
+<div class="divider"></div>
+
+<div class="bg-base-300 rounded-xl p-3 h-32 overflow-y-auto text-sm" id="history">
+<p class="opacity-60">History :</p>
+</div>
+
+<p class="text-center text-xs opacity-50 mt-2">© Desfa 2026</p>
+
+</div>
+
+<script>
+
+let display = document.getElementById("display")
+let history = document.getElementById("history")
+
+function clearDisplay(){
+display.textContent = "0"
+}
+
+function appendNumber(number){
+if(display.textContent === "0"){
+display.textContent = number
+}else{
+display.textContent += number
+}
+}
+
+function appendOperator(operator){
+const lastChar = display.textContent.slice(-1)
+
+if("+-*/".includes(lastChar)){
+display.textContent = display.textContent.slice(0,-1) + operator
+}else{
+display.textContent += operator
+}
+}
+
+function calculateResult(){
+
+let expression = display.textContent
+
+const lastChar = expression.slice(-1)
+
+// jika terakhir operator, jangan dihitung
+if("+-*/".includes(lastChar)){
+return
+}
+
+try{
+
+expression = expression
+.replace("×","*")
+.replace("÷","/")
+
+let result = eval(expression)
+
+history.innerHTML += `<p>${display.textContent} = ${result}</p>`
+
+display.textContent = result
+
+}catch{
+
+display.textContent = "0"
+
+}
+
+}
+function deleteLast(){
+
+if(display.textContent.length === 1){
+display.textContent = "0"
+}else{
+display.textContent = display.textContent.slice(0,-1)
+}
+
+}
+</script>
+
+</body>
+</html>
